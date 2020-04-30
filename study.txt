@@ -1,0 +1,20 @@
+this.props - read-only / 수정안됨
+this.state - this.setState로 데이터 변경
+
+component내부에서 자신에게 전달 된 this.props의 값을 변경할 수 없다 - this.props
+component외부(상위 component)에서는 값을 변경할 수 있다 - this.setState
+
+내부 - state / 외부 - props
+
+상위 component가 하위 component에게 값을 전달할 때 - this.props 통해 전달
+하위 component가 상위 component의 어떤 값을 변경할 때 - event를 통해 state값 변경
+
+Create
+Read - O
+Update
+Delete
+
+
+
+- Redux
+하나의 외부 데이터 저장소(store)에서 관리함, 저장소(store)의 값이 바뀌면 관련된 모든 component의 값이 변경된다.
