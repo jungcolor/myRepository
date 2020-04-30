@@ -1,18 +1,69 @@
-this.props - read-only / 수정안됨
-this.state - this.setState로 데이터 변경
+React - react 공식문서 확인 잘 할것
+
+내부 - state / 외부 - props
+
+this.props - 사용자에게 제공 / read-only / 수정안됨
+this.state - 내부에서 관리 / this.setState로 데이터 변경
+
+상위 component의 state를 하위 component의 props로 전달
 
 component내부에서 자신에게 전달 된 this.props의 값을 변경할 수 없다 - this.props
 component외부(상위 component)에서는 값을 변경할 수 있다 - this.setState
 
-내부 - state / 외부 - props
-
 상위 component가 하위 component에게 값을 전달할 때 - this.props 통해 전달
 하위 component가 상위 component의 어떤 값을 변경할 때 - event를 통해 state값 변경
 
-Create
-Read - O
-Update
-Delete
+component 설계시 고려해야할 부분
+state나 props를 변경하게 되면 라이프사이클에 의해 불필요한 render가 호출되기 때문에,
+state에 들어갈 내용을 고민하여 설계해야 한다 - 비용낭비
+
+배열에 데이터를 추가할 때는 push() 보다는 concat()을 사용하는게 좋다 
+- 성능관리시 원본데이터가 오염되어 수정하기 까다로움
+
+개발 시 원본을 변경하지 않는다 - 불변성 (immutable)
+this.setState 어떠한 값을 줄 때는 원본을 오염시키지 않고 복제본을 만들어 수정하고 원본을 변경하는 방식으로 해야한다.
+- shouldComponentUpdate함수를 사용할 때 원본을 변경하게 되면 문제가 발생 - 원본 데이터와 변경 된 데이터 비교 불가
+
+shouldComponentUpdate(newProps, newState)
+- render보다 먼저 호출됨
+- return값이 true면 render가 호출됨, false면 호출되지 않음 (불필요한 render 호출 방지) - 비용관리
+- newProps인자는 새롭게 변경 된 데이터를 나타냄
+  ㄴ ex) newProps.data(변경 된 데이터) === this.props.data(원본 데이터) - 원본이 변경되면 비교 불가
+
+Array 경우
+
+방법1
+var arr = [1, 2];
+var arr2 = Array.from(arr);
+arr2.push("값");
+
+방법2
+var arr = [1, 2];
+var arr2 = arr.concat("값");
+
+방법1, 2모두 원본 데이터를 오염시키지 않고 새로운 배열을 변수에 담아 사용
+
+Object 경우
+var obj = {name: "test"};
+var obj2 = Object.assign({}, obj);
+
+결론적으로는 Array와 Object 둘 다 방법만 다를 뿐 원본 데이터를 오염시키지 않고 개발을 하는것이다
+
+
+
+
+
+
 
 - Redux
-하나의 외부 데이터 저장소(store)에서 관리함, 저장소(store)의 값이 바뀌면 관련된 모든 component의 값이 변경된다.
+하나의 외부 데이터 저장소(store)에서 관리함, 저장소(store)에서 어떠한 값이 바뀌면 관련된 모든 component의 값이 변경된다.
+
+
+
+
+
+
+
+불현듯 드는 의문 메모
+1. 원본 데이터를 오염시키지 않기위해 Object.assign을 사용하였는데,
+   Lodash, jQeury의 _.extend / _.assign / _.merge의 차이점 - https://it-man.tistory.com/656
